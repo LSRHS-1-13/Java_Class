@@ -2,17 +2,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NatickCollection extends Mall {
-	
-	public void createStores() {
+	static List<Store> stores;
+	public NatickCollection() {
 		
 	
-	List<String> stores = new ArrayList<String>();
-	stores.add("Bob's Barbecue");
-	stores.add("Bill");
-	stores.add("Barnacle Boy");
-	for (int i = 0; i < 10; i++) {
-		Store store = new Store(stores.get(i));  //other stuff
-	}
+	stores = new ArrayList<Store>();
+	Store Bills_Barbecue = new Store("Bills_Barbecue");
+	Store Bobs_Barnacles = new Store("Bobs_Barnacles");
+	stores.add(Bills_Barbecue);
+	stores.add(Bobs_Barnacles);
+	Bills_Barbecue.addItem("jam", 20, 30);
+	Bobs_Barnacles.addItem("toast", 20, 30);
+	Bobs_Barnacles.addItem("Fishy Fish", 20, 30);
 	
 	}
+	public static List<Store> availableStores() {
+		return stores;
+	}
+
 }
