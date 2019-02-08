@@ -11,8 +11,8 @@ public class NatickCollection extends Mall {
 	Store Bobs_Barnacles = new Store("Bobs_Barnacles");
 	stores.add(Bills_Barbecue);
 	stores.add(Bobs_Barnacles);
-	Bills_Barbecue.addItem("jam", 20, 30);
-	Bobs_Barnacles.addItem("toast", 20, 30);
+	Bills_Barbecue.addItem("jam", 50, 30);
+	Bobs_Barnacles.addItem("toast", 10, 30);
 	Bobs_Barnacles.addItem("Fishy Fish", 20, 30);
 	
 	}
