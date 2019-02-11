@@ -19,37 +19,57 @@ public class Shopper {
 	boolean repeat2 = true;
 	boolean repeat3 = true;
 	public void visit(Mall mallname) {
+		System.out.println("Welcome to the " + mallname.getName() + "!");
+		System.out.println("Throughout your time here, feel free to use i to check what you've bought so far as "
+							+ "well as to check your current balance.");
+		System.out.println("And you can press e in order to exit the mall. Enjoy your shopping!");
 		while(repeat1 == true) {
 			repeat1 = false;
 			repeat2 = true;
 			repeat2 = true;
 		System.out.println("Which store would you like to visit?");
-		for (int i = 0; i < NatickCollection.availableStores().size(); i++) {
-		System.out.println((i + 1) + ". " + NatickCollection.availableStores().get(i).returnName());
+		for (int i = 0; i < mallname.availableStores().size(); i++) {
+		System.out.println((i + 1) + ". " + mallname.availableStores().get(i).returnName());
 		
 		}
 		String input = scan.next();
 		if (checkInput(input)) {
+			System.out.println("Which store would you like to visit?");
+			for (int i = 0; i < mallname.availableStores().size(); i++) {
+			System.out.println((i + 1) + ". " + mallname.availableStores().get(i).returnName());
 			
+			}
+			input = scan.next();
 		}
-		else {
+		
 	//	int numItems = Store.inventory().size();
 		while(repeat2 == true) {
 			repeat2 = false;
 			repeat3 = true;
-		System.out.println("Which item would you like to get?");
+			System.out.println("Which item would you like to get?");
 		Item item = null;
-		for (int i = 0; i < NatickCollection.availableStores().get(Integer.parseInt(input)-1).inventory().size(); i++) {
-			item = NatickCollection.availableStores().get(Integer.parseInt(input)-1).inventory().get(i);
-			System.out.println((i + 1) + ". " + item.returnName() + " $" + item.returnPrice());}
+		for (int i = 0; i < mallname.availableStores().get(Integer.parseInt(input)-1).inventory().size(); i++) {
+			item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(i);
+			System.out.println((i + 1) + ". " + item.returnName() + " $" + item.returnPrice());
+		}
 		String input1 = scan.next();
-		checkInput(input1);
-		item = NatickCollection.availableStores().get(Integer.parseInt(input)-1).inventory().get(Integer.parseInt(input1)-1);
+		if (checkInput(input1)) {
+			System.out.println("Which item would you like to get?");
+			for (int i = 0; i < mallname.availableStores().get(Integer.parseInt(input)-1).inventory().size(); i++) {
+				item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(i);
+				System.out.println((i + 1) + ". " + item.returnName() + " $" + item.returnPrice());
+			}
+			input1 = scan.next();
+		}
+		item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(Integer.parseInt(input1)-1);
 	//fix above
 		System.out.println("How much would you like of the " + item.returnName() + "?");
 		
 		String input2 = scan.next();
-		checkInput(input2);
+		if (checkInput(input2)) {
+			System.out.println("How much would you like of the " + item.returnName() + "?");
+			input2 = scan.next();
+		}
 		if (cart.containsKey(item)) {
 			int value = cart.get(item);
 			cart.remove(item);
@@ -67,7 +87,15 @@ public class Shopper {
 		System.out.println("4. Attempt Thievery");
 		System.out.println("5. Check Balance");
 		String input3 = scan.next();
-		checkInput(input3);
+		if (checkInput(input3)) {
+			System.out.println("What would you like to do now?");
+			System.out.println("1. Check Cart");
+			System.out.println("2. Buy Something Else");
+			System.out.println("3. Checkout");
+			System.out.println("4. Attempt Thievery");
+			System.out.println("5. Check Balance");
+			input3 = scan.next();
+		}
 		if (input3.equals("1")) {
 			Iterator<Item> iterator =  cart.keySet().iterator();
 			Iterator<Integer> iterator1 =  cart.values().iterator();
@@ -93,7 +121,6 @@ public class Shopper {
 			while(iterator.hasNext()){
 			  Item element = (Item) iterator.next();
 			  Integer element2 = (Integer) iterator1.next();
-			  boughtItems.put(element, element2);
 			  cart.remove(element);
 			  if (boughtItems.containsKey(element)) {
 					int value = boughtItems.get(element);
@@ -110,7 +137,7 @@ public class Shopper {
 			System.out.println("Your Balance Is: $" + money);
 		}else if (input3.equals("4")) {
 			System.out.println("Theif u r");
-			repeat2 = true;
+			repeat1 = true;
 			Iterator<Item> iterator =  cart.keySet().iterator();
 			Iterator<Integer> iterator1 =  cart.values().iterator();
 			double stealability = 0;
@@ -119,12 +146,13 @@ public class Shopper {
 			  Integer element2 = (Integer) iterator1.next();
 			  Double element3 = (Double) element.returnSteal();
 			  stealability = stealability + (element3 * element2);
-			  if (stealability * NatickCollection.security() < sneakiness) {
+			  if (stealability * mallname.security() < sneakiness) {
 				  boughtItems.put(element, element2);
 				  cart.remove(element);
 			  }else {
 				  System.out.println("Lol now ur a sacrifice for Fat Dog");
-				  repeat2 = false;
+				  repeat1 = false;
+				  
 			  }
 			  
 			 
@@ -157,6 +185,7 @@ public class Shopper {
 			System.out.println("Your Balance Is: $" + money);
 			return true;
 		} else if(input.equals("e")) {
+			System.exit(0);
 			return true;
 		}
 		else {
