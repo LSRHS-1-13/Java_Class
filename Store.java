@@ -4,7 +4,7 @@ import java.util.List;
 public class Store {
 	
 	private String name;
-		ArrayList<Item> items;
+	private ArrayList<Item> items;
 	
 	
 	public Store(String storeName) {

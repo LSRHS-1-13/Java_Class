@@ -1,9 +1,9 @@
 import java.util.List;
 
 public abstract class Mall {
-	String name;
-	List<Store> stores;
-	Security NatickSecure;
+	private String name;
+	private List<Store> stores;
+	private Security NatickSecure;
 	public Mall() {
 
 	}

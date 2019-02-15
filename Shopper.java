@@ -5,19 +5,22 @@ import java.util.Scanner;
 
 public class Shopper {
 	Scanner scan = new Scanner(System.in);
-	double money;
-	double sneakiness;
-	Map<Item, Integer> cart;
-	Map<Item, Integer> boughtItems;
+	private double money;
+	private double sneakiness;
+	private Map<Item, Integer> cart;
+	private Map<Item, Integer> boughtItems;
 	public Shopper(String shopperName, double balance, /*ArrayList<String>[] methodsOfPayment,*/ double sneakiness) {
 		money = balance;
 		this.sneakiness = sneakiness;
 		cart = new HashMap<Item, Integer>();
 		boughtItems = new HashMap<Item, Integer>();
 	}
-	boolean repeat1 = true;
-	boolean repeat2 = true;
-	boolean repeat3 = true;
+	private boolean repeat1 = true;
+	private boolean repeat2 = true;
+	private boolean repeat3 = true;
+	private boolean error1 = true;
+	private boolean error2 = true;
+	private boolean error3 = true;
 	public void visit(Mall mallname) {
 		System.out.println("Welcome to the " + mallname.getName() + "!");
 		System.out.println("Throughout your time here, feel free to use i to check what you've bought so far as "
@@ -26,10 +29,18 @@ public class Shopper {
 		while(repeat1 == true) {
 			repeat1 = false;
 			repeat2 = true;
-			repeat2 = true;
+			repeat3 = true;
+			error1 = true;
+			error2 = true;
+			error3 = true;
 		System.out.println("Which store would you like to visit?");
 		for (int i = 0; i < mallname.availableStores().size(); i++) {
+			try {
 		System.out.println((i + 1) + ". " + mallname.availableStores().get(i).returnName());
+			}
+			catch(Exception e) {
+				
+			}
 		
 		}
 		String input = scan.next();
@@ -46,23 +57,57 @@ public class Shopper {
 		while(repeat2 == true) {
 			repeat2 = false;
 			repeat3 = true;
-			System.out.println("Which item would you like to get?");
+			error3 = true;
+			error1 = true;
+
 		Item item = null;
+		while (error1) {
+			error1 = false;
+			error2 = true;
+			repeat3 = true;
+			error3 = true;
+		try {
+			mallname.availableStores().get(Integer.parseInt(input)-1).inventory().size();
+			System.out.println("Which item would you like to get?");
 		for (int i = 0; i < mallname.availableStores().get(Integer.parseInt(input)-1).inventory().size(); i++) {
 			item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(i);
 			System.out.println((i + 1) + ". " + item.returnName() + " $" + item.returnPrice());
+			
+		}
+		}
+		catch(Exception e) {
+			System.out.println("Please enter a valid input u nerd");
+			repeat1 = true;
+			break;
 		}
 		String input1 = scan.next();
 		if (checkInput(input1)) {
 			System.out.println("Which item would you like to get?");
+			try {
 			for (int i = 0; i < mallname.availableStores().get(Integer.parseInt(input)-1).inventory().size(); i++) {
 				item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(i);
 				System.out.println((i + 1) + ". " + item.returnName() + " $" + item.returnPrice());
 			}
+			}
+			catch(Exception e) {
+				System.out.println("Please enter a valid input u nerd");
+			}
 			input1 = scan.next();
+		
 		}
+		while (error2) {
+		error2 = false;
+		error3 = true;
+		try {
 		item = mallname.availableStores().get(Integer.parseInt(input)-1).inventory().get(Integer.parseInt(input1)-1);
-	//fix above
+		}
+		catch(Exception e) {
+			System.out.println("Please enter a valid input u nerd");
+			error1 = true;
+			break;
+		}
+		while (error3) {
+			error3 = false;
 		System.out.println("How much would you like of the " + item.returnName() + "?");
 		
 		String input2 = scan.next();
@@ -76,7 +121,20 @@ public class Shopper {
 			cart.put(item, value + Integer.parseInt(input2));
 		}
 		else {
-		cart.put(item, Integer.parseInt(input2));
+		try {
+			int value = Integer.parseInt(input2);
+			if (value > 0) {
+			cart.put(item, value);
+			}
+			else {
+				System.out.println("Please enter a valid input u nerd");
+				throw new Exception("Bad");
+			}
+		}
+		catch(Exception e) {
+			error2 = true;
+			break;
+		}
 		}
 		while(repeat3 == true) {
 			repeat3 = false;
@@ -118,20 +176,23 @@ public class Shopper {
 			Iterator<Item> iterator =  cart.keySet().iterator();
 			Iterator<Integer> iterator1 =  cart.values().iterator();
 			double cartCost = 0;
-			while(iterator.hasNext()){
-			  Item element = (Item) iterator.next();
-			  Integer element2 = (Integer) iterator1.next();
-			  cart.remove(element);
-			  if (boughtItems.containsKey(element)) {
-					int value = boughtItems.get(element);
-					boughtItems.remove(element);
-					boughtItems.put(element, value + element2);
-				}
-				else {
-					boughtItems.put(element, element2);
-				}
+			while(iterator.hasNext() && iterator1.hasNext()){
+				//FIX
+			  Item element = iterator.next();
+			  Integer element2 = iterator1.next();
+			  System.out.println(element.returnName());
+	
+//			  if (boughtItems.containsKey(element)) {
+//					int value = boughtItems.get(element);
+//					boughtItems.remove(element);
+//					boughtItems.put(element, value + element2);
+//				}
+//				else {
+//					boughtItems.put(element, element2);
+//				}
 			  Double element1 = element.returnPrice();
 			  cartCost = cartCost + (element1 * element2);
+			  cart.remove(element);
 			}
 			money = money - cartCost;
 			System.out.println("Your Balance Is: $" + money);
@@ -161,13 +222,19 @@ public class Shopper {
 			System.out.println("Your Balance Is: $" + money);
 			repeat3 = true;
 		}
+		else {
+			System.out.println("Please enter a valid input");
+			repeat3 = true;
 		}
-			
+		}
+		}
 		
 //		for (int i = 0; i < Integer.parseInt(input1); i++) {
 //			
 //			
 //		}
+		}
+		}
 		}
 	}
 	}

@@ -1,7 +1,7 @@
 
 public class Security {
-	int guards;
-	double watchfullness;
+	private int guards;
+	private double watchfullness;
 	public Security(int guards, double watchfullness) {
 		this.guards = guards;
 		this.watchfullness = watchfullness;

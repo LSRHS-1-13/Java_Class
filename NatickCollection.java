@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NatickCollection extends Mall {
-	List<Store> stores;
-	Security NatickSecure;
-	String name;
+	private List<Store> stores;
+	private Security NatickSecure;
+	private String name;
 	public NatickCollection() {
 		name = "Natick Mall";
-		NatickSecure = new Security(5, 15);
+		NatickSecure = new Security(5, 3);
 		stores = new ArrayList<Store>();
 		Store Bills_Barbecue = new Store("Bills Barbecue");
 		Store Bobs_Barnacles = new Store("Bobs Barnacles");
